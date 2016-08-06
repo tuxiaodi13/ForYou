@@ -12,11 +12,6 @@
         <activity
             android:name=".activity.SentenceActivity"
             android:label="@string/title_activity_sentence" >
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
         </activity>
         <activity
             android:name=".activity.MusicActivity"
@@ -28,6 +23,25 @@
             android:enabled="true"
             android:exported="true" >
         </service>
+
+        <activity
+            android:name=".activity.ContentActivity"
+            android:label="@string/title_activity_content" >
+        </activity>
+        <activity
+            android:name=".activity.MainActivity"
+            android:label="@string/title_activity_main" >
+
+        </activity>
+        <activity
+            android:name=".activity.SplashActivity"
+            android:label="@string/title_activity_splash" >
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
     </application>
 
 </manifest>

@@ -9,7 +9,9 @@ import org.json.JSONObject;
 import java.io.FileInputStream;
 import java.io.InputStream;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
+import java.util.TimeZone;
 
 import bai.foryou.model.LrcContent;
 
@@ -17,6 +19,15 @@ import bai.foryou.model.LrcContent;
  * Created by Baiyaozhong on 2016-08-02.
  */
 public class Utility {
+    public static String engStr=null;
+    public static String chiStr=null;
+    public static String imgUrl=null;
+    public static String songTitle=null;
+    public static String lrcUrl=null;
+    public static String songUrl=null;
+    public static String songRecommend=null;
+    public static String contentUrl=null;
+    public static String contentRecommend=null;
     /*
      *解析返回的每日一句
      */
@@ -36,6 +47,21 @@ public class Utility {
         }catch (Exception e){
             e.printStackTrace();
         }
+    }
+    public synchronized static void handeleResponse(Context context,String response){
+        try{
+            JSONObject json=new JSONObject(response);
+            engStr=json.getString("engSentence");
+            chiStr=json.getString("chiSentence");
+            imgUrl=json.getString("imgSentenceUrl");
+            songTitle=json.getString("songTitle");
+            lrcUrl=json.getString("lrcUrl");
+            songUrl=json.getString("songUrl");
+            songRecommend=json.getString("songRecommend");
+            contentUrl=json.getString("contentUrl");
+            contentRecommend=json.getString("contentRecommend");
+        } catch (Exception e) {
+            e.printStackTrace();}
     }
 
     public static String formatTime(long time) {
@@ -107,6 +133,41 @@ public class Utility {
 
         int currentTime=(minute*60+second)*1000+millisecond*10;
         return currentTime;
+    }
+    //获得当前日期
+    public static String StringData(){
+        final Calendar c = Calendar.getInstance();
+        c.setTimeZone(TimeZone.getTimeZone("GMT+8:00"));
+        String mYear = String.valueOf(c.get(Calendar.YEAR)); // 获取当前年份
+
+        String mMonth = String.valueOf(c.get(Calendar.MONTH) + 1);// 获取当前月份
+        if (mMonth.length()==1){
+            mMonth="0"+mMonth;
+        }
+        String mDay = String.valueOf(c.get(Calendar.DAY_OF_MONTH));// 获取当前月份的日期号码
+        if (mDay.length()==1){
+            mDay="0"+mDay;
+        }
+       /*
+       String mWay = String.valueOf(c.get(Calendar.DAY_OF_WEEK));
+        if("1".equals(mWay)){
+            mWay ="天";
+        }else if("2".equals(mWay)){
+            mWay ="一";
+        }else if("3".equals(mWay)){
+            mWay ="二";
+        }else if("4".equals(mWay)){
+            mWay ="三";
+        }else if("5".equals(mWay)){
+            mWay ="四";
+        }else if("6".equals(mWay)){
+            mWay ="五";
+        }else if("7".equals(mWay)){
+            mWay ="六";
+        }
+        return mYear +  + mMonth + "月" + mDay+"日"+"/星期"+mWay;
+        */
+        return mYear+mMonth+mDay;
     }
 
 }

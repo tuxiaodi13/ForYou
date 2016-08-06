@@ -33,12 +33,13 @@ import bai.foryou.util.HttpUtil;
 import bai.foryou.util.Utility;
 
 public class MusicActivity extends Activity implements View.OnClickListener,SeekBar.OnSeekBarChangeListener{
+    private TextView mTitle;
     private TextView mTexting;
     private TextView mTextDuration;
-    private ImageView mPlayState;
+
     private ImageView mPlay;
     private SeekBar   mSeekBar;
-    private MediaPlayer mediaPlayer;
+    public  static MediaPlayer  mediaPlayer;
     private Boolean isPlay=false;//是否正在播放
     private Boolean isThread=true;//是否让子线程继续
 
@@ -51,8 +52,7 @@ public class MusicActivity extends Activity implements View.OnClickListener,Seek
         super.onCreate(savedInstanceState);
         requestWindowFeature(Window.FEATURE_NO_TITLE);
         setContentView(R.layout.activity_music);
-        mPlayState=(ImageView)findViewById(R.id.play_state);
-        mPlayState.setOnClickListener(this);
+
 
         mPlay=(ImageView)findViewById(R.id.music_play);
         mPlay.setOnClickListener(this);
@@ -62,15 +62,17 @@ public class MusicActivity extends Activity implements View.OnClickListener,Seek
 
         mTexting=(TextView)findViewById(R.id.texting);
         mTextDuration=(TextView)findViewById(R.id.text_duration);
+        mTitle=(TextView)findViewById(R.id.text_title);
+        mTitle.setText(Utility.songTitle);
+
 
         mLrcView=(LrcView)findViewById(R.id.lrc_View);
 
         new LooperThread().start();
         try{
 
-           //Uri uri=Uri.parse("http://m2.music.126.net/tQi5no1mLvzlqdwJ1Fr8Rw==/2904909721097996.mp3");
-           //Uri uri=Uri.parse("http://m2.music.126.net/5WZiLpq_v4uP-p6RyPtEQQ==/2912606304511882.mp3");//最长的旅途
-            Uri uri=Uri.parse("http://m2.music.126.net/3TLW28ieIgYKUYhe-ZFODQ==/2026399930004856.mp3");
+            String address=Utility.songUrl;
+            Uri uri=Uri.parse(address);
             mediaPlayer=new MediaPlayer();
             mediaPlayer.setDataSource(this, uri);
             mediaPlayer.prepare();
@@ -81,8 +83,8 @@ public class MusicActivity extends Activity implements View.OnClickListener,Seek
             e.printStackTrace();
         }
 
-        //String lrc_address="http://music.163.com/api/song/lyric?os=pc&id=33004552&lv=-1&kv=-1&tv=-1";//最长的旅途
-        String lrc_address="http://music.163.com/api/song/lyric?os=pc&id=4877700&lv=-1&kv=-1&tv=-1";
+
+        String lrc_address=Utility.lrcUrl;
         initLrc(lrc_address);
 
         mLrcView.setAnimation(AnimationUtils.loadAnimation(this, R.anim.abc_grow_fade_in_from_bottom));
@@ -218,12 +220,6 @@ public class MusicActivity extends Activity implements View.OnClickListener,Seek
         }
     }
 
-    @Override
-    public void onBackPressed(){
-        super.onBackPressed();
-        isThread=false;//按返回键时让子线程中的run方法不再执行
-        finish();
-    }
 
 
 

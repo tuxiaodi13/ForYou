@@ -26,7 +26,7 @@ public class HttpUtil {
                     StringBuilder response=new StringBuilder();
                     String line;
                     while((line=reader.readLine())!=null){
-                        response.append(line);
+                        response.append(line+"\n");
                     }
                     if (listener!=null){
                         listener.onFinish(response.toString());
@@ -44,4 +44,5 @@ public class HttpUtil {
             }
         }).start();
     }
+
 }

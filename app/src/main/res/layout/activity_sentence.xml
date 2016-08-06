@@ -2,26 +2,36 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical" android:layout_width="match_parent"
     android:layout_height="match_parent">
-    <TextView
-        android:id="@+id/eng_content"
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
-    <TextView
-        android:id="@+id/chi_content"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
-    <ImageView
-        android:id="@+id/sentence_img"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
-    <Button
-        android:id="@+id/sentencePlay_btn"
-        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_gravity="center_horizontal"/>
-    <Button
-        android:id="@+id/toMusicActivity_btn"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center_horizontal"/>
+        android:paddingLeft="15dp"
+        android:paddingRight="15dp"
+        android:paddingTop="30dp"
+        android:orientation="vertical">
+        <ImageView
+            android:id="@+id/sentence_img"
+            android:layout_width="match_parent"
+            android:layout_height="250dp"
+            android:scaleType="centerCrop"
+            />
+        <TextView
+            android:id="@+id/eng_content"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:layout_marginRight="40dp"
+            android:textSize="18sp"
+            android:typeface="serif"/>
+        <TextView
+            android:id="@+id/chi_content"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="30dp"
+            android:layout_marginLeft="40dp"
+            android:textSize="15sp"
+            android:textColor="#1A1A1A"/>
+    </LinearLayout>
+
+
 </LinearLayout>
