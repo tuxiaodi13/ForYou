@@ -21,20 +21,23 @@ import bai.foryou.util.HttpUtil;
 import bai.foryou.util.Utility;
 
 public class ContentActivity extends Activity {
-    TextView tv1;
+    TextView textView;
     String content;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_content);
 
-        tv1=(TextView)findViewById(R.id.tv1);
+        textView=(TextView)findViewById(R.id.tv1);
 
-        String address1=Utility.contentUrl;
+        String contentAddress=Utility.contentUrl;
+        if (contentAddress!=null){
+            initContent(contentAddress);
+        }
+    }
 
-
-
-        HttpUtil.setHttpRequest(address1, new HttpCallbackListener() {
+    public void initContent(String contentUrl){
+        HttpUtil.setHttpRequest(contentUrl, new HttpCallbackListener() {
             @Override
             public void onFinish(String response) {
                 try {
@@ -44,7 +47,7 @@ public class ContentActivity extends Activity {
                     runOnUiThread(new Runnable() {
                         @Override
                         public void run() {
-                            tv1.setText(content);
+                            textView.setText(content);
                         }
                     });
 
@@ -64,9 +67,6 @@ public class ContentActivity extends Activity {
 
             }
         });
-
-
-
     }
 
 

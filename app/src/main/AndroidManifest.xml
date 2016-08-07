@@ -3,6 +3,7 @@
     package="bai.foryou" >
 
     <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
 
     <application
         android:allowBackup="true"
@@ -10,6 +11,7 @@
         android:label="@string/app_name"
         android:theme="@style/AppTheme" >
         <activity
+
             android:name=".activity.SentenceActivity"
             android:label="@string/title_activity_sentence" >
         </activity>

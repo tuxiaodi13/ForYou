@@ -32,25 +32,64 @@ public class SplashActivity extends Activity {
     private Animation mFadeOut;
     private Animation mFadeInScale;
     private Animation mFadeInScale2;
+    //存放数据接口的固定地址
+    private static String address="http://bai-foryou.sinacloud.net/address.txt";
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         requestWindowFeature(Window.FEATURE_NO_TITLE);
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
         setContentView(R.layout.activity_splash);
-        //String address1="https://bai-foryou.sinacloud.net/20160806.txt";
+        /*//String address1="https://bai-foryou.sinacloud.net/20160806.txt";
         String address1="https://bai-foryou.sinacloud.net/";
         String timStr=Utility.StringData();
-        String address=address1+timStr+".txt";
+        String address=address1+timStr+".txt";*/
+        //网络连接正常，则执行从网络获取数据操作
+        if (HttpUtil.isNetConnected(this)){
+            initData(address);
+        }
 
+
+
+        iv_start=(ImageView)findViewById(R.id.iv_start);
+        iv_start.setImageResource(R.drawable.look_around);
+        initAnim();
+        setListener();
+        iv_start.setAnimation(mFadeIn);
+
+    }
+
+    //访问网络得到初始化数据
+    private void initData(String address){
         HttpUtil.setHttpRequest(address, new HttpCallbackListener() {
             @Override
-            public void onFinish(String response) {
-                Utility.handeleResponse(SplashActivity.this, response);
-                Log.d("Splash", "onCreate");
-                Log.d("Splash", Utility.chiStr);
-                Log.d("Splash", Utility.imgUrl);
+            public void onFinish(String response){
+                Log.d("SplashActivity",response);
+                String dataUrl = response;
+                if(dataUrl!=null){
+                    //继续访问得到的数据接口
+                    HttpUtil.setHttpRequest(dataUrl, new HttpCallbackListener() {
+                        @Override
+                        public void onFinish(String response) {
+
+                            Utility.handeleResponse(SplashActivity.this, response);
+                            Log.d("Splash", "onCreate");
+                            Log.d("Splash", Utility.chiStr);
+                            Log.d("Splash", Utility.imgUrl);
+                        }
+                        @Override
+                        public void onFinish(Bitmap bitmap) {
+
+                        }
+                        @Override
+                        public void onError(Exception e) {
+
+                        }
+                    });
+                }
             }
+
 
             @Override
             public void onFinish(Bitmap bitmap) {
@@ -60,15 +99,9 @@ public class SplashActivity extends Activity {
             @Override
             public void onError(Exception e) {
 
+                Log.d("SplashActivity", "网络异常");
             }
         });
-
-        iv_start=(ImageView)findViewById(R.id.iv_start);
-        iv_start.setImageResource(R.drawable.look_around);
-        initAnim();
-        setListener();
-        iv_start.setAnimation(mFadeIn);
-
     }
     //初始化动画
     private void initAnim(){

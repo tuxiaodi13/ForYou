@@ -68,27 +68,40 @@ public class MusicActivity extends Activity implements View.OnClickListener,Seek
 
         mLrcView=(LrcView)findViewById(R.id.lrc_View);
 
-        new LooperThread().start();
-        try{
+       new LooperThread().start();
 
-            String address=Utility.songUrl;
-            Uri uri=Uri.parse(address);
-            mediaPlayer=new MediaPlayer();
-            mediaPlayer.setDataSource(this, uri);
-            mediaPlayer.prepare();
-            long duration=mediaPlayer.getDuration();
-            String text_current=Utility.formatTime(duration);
-            mTextDuration.setText(text_current);
-        }catch (Exception e){
-            e.printStackTrace();
-        }
 
 
         String lrc_address=Utility.lrcUrl;
-        initLrc(lrc_address);
+        if (lrc_address!=null){
+            initLrc(lrc_address);
+        }
+
+        String song_address=Utility.songUrl;
+        if (song_address!=null){
+            initMediaPlayer(song_address);
+        }
+
 
         mLrcView.setAnimation(AnimationUtils.loadAnimation(this, R.anim.abc_grow_fade_in_from_bottom));
 
+    }
+
+    public void initMediaPlayer(String songUrl){
+        try{
+            if (songUrl!=null){
+                Uri uri=Uri.parse(songUrl);
+                mediaPlayer=new MediaPlayer();
+                mediaPlayer.setDataSource(this, uri);
+                mediaPlayer.prepare();
+                long duration=mediaPlayer.getDuration();
+                String text_current=Utility.formatTime(duration);
+                mTextDuration.setText(text_current);
+            }
+
+        }catch (Exception e){
+            e.printStackTrace();
+        }
     }
 
 
