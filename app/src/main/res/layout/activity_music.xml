@@ -9,6 +9,7 @@
 
     android:orientation="vertical" >
 
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="100dp"
@@ -74,9 +75,13 @@
             android:textColor="#FFFFFF" />
 
         <TextView
+            android:id="@+id/date_music"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_weight="1" />
+            android:layout_weight="1"
+            android:gravity="center"
+            android:textColor="#FFFFFF"
+            />
 
         <TextView
             android:id="@+id/text_duration"
@@ -92,22 +97,35 @@
         android:layout_height="90dp"
         android:gravity="center_vertical"
         android:orientation="horizontal" >
-
-
-
-
+        <ImageView
+            android:layout_width="60dp"
+            android:layout_height="60dp" />
+        <ImageView
+            android:id="@+id/music_last"
+            android:layout_width="0dp"
+            android:layout_height="30dp"
+            android:layout_weight="1"
+            android:src="@drawable/player_btn_prev_normal" />
 
         <ImageView
             android:id="@+id/music_play"
             android:layout_width="0dp"
             android:layout_height="60dp"
             android:layout_weight="1"
-            android:layout_gravity="center"
+
             android:src="@drawable/lock_play" />
-
-
-
+        <ImageView
+            android:id="@+id/music_next"
+            android:layout_width="0dp"
+            android:layout_height="30dp"
+            android:layout_weight="1"
+            android:src="@drawable/player_btn_next_normal" />
+        <ImageView
+            android:layout_width="60dp"
+            android:layout_height="60dp" />
 
     </LinearLayout>
+
+
 
 </LinearLayout>

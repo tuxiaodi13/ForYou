@@ -3,6 +3,7 @@ package bai.foryou.util;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
+import android.util.Log;
 
 import org.json.JSONObject;
 
@@ -28,6 +29,9 @@ public class Utility {
     public static String songRecommend=null;
     public static String contentUrl=null;
     public static String contentRecommend=null;
+    public static String date=null;
+    public static Integer id=null;//第几期
+    public static Integer idToday=null;//今天是第几期
     /*
      *解析返回的每日一句
      */
@@ -48,7 +52,7 @@ public class Utility {
             e.printStackTrace();
         }
     }
-    public synchronized static void handeleResponse(Context context,String response){
+    public  synchronized static void handeleResponse(Context context,String response){
         try{
             JSONObject json=new JSONObject(response);
             engStr=json.getString("engSentence");
@@ -60,8 +64,16 @@ public class Utility {
             songRecommend=json.getString("songRecommend");
             contentUrl=json.getString("contentUrl");
             contentRecommend=json.getString("contentRecommend");
+            date=json.getString("date");
+            id=Integer.parseInt(json.getString("id"));
+
+            Log.d("Utility","running");
+
         } catch (Exception e) {
-            e.printStackTrace();}
+            e.printStackTrace();
+            Log.e("Utility",Log.getStackTraceString(e));
+            Log.d("Utility", "error");
+        }
     }
 
     public static String formatTime(long time) {

@@ -34,6 +34,7 @@ public class SplashActivity extends Activity {
     private Animation mFadeInScale2;
     //存放数据接口的固定地址
     private static String address="http://bai-foryou.sinacloud.net/address.txt";
+    private static String address1="http://bai-foryou.sinacloud.net/address1.txt";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,13 +42,10 @@ public class SplashActivity extends Activity {
         requestWindowFeature(Window.FEATURE_NO_TITLE);
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
         setContentView(R.layout.activity_splash);
-        /*//String address1="https://bai-foryou.sinacloud.net/20160806.txt";
-        String address1="https://bai-foryou.sinacloud.net/";
-        String timStr=Utility.StringData();
-        String address=address1+timStr+".txt";*/
-        //网络连接正常，则执行从网络获取数据操作
+
         if (HttpUtil.isNetConnected(this)){
             initData(address);
+
         }
 
 
@@ -65,18 +63,21 @@ public class SplashActivity extends Activity {
         HttpUtil.setHttpRequest(address, new HttpCallbackListener() {
             @Override
             public void onFinish(String response){
-                Log.d("SplashActivity",response);
+
                 String dataUrl = response;
+                Log.d("SplashActivity","response");
+                Log.d("SplashActivity",response);
                 if(dataUrl!=null){
                     //继续访问得到的数据接口
                     HttpUtil.setHttpRequest(dataUrl, new HttpCallbackListener() {
                         @Override
                         public void onFinish(String response) {
-
+                            Log.d("SplashActivity",response);
                             Utility.handeleResponse(SplashActivity.this, response);
-                            Log.d("Splash", "onCreate");
-                            Log.d("Splash", Utility.chiStr);
-                            Log.d("Splash", Utility.imgUrl);
+                            Utility.idToday=Utility.id;//在初始化数据时得到今天是第几期
+                            SentenceActivity.idSentence=Utility.id;//为每个Activity指定一个可变的id，保证在切换日期时互不影响。
+                            MusicActivity.idMusic=Utility.id;
+                            ContentActivity.idContent=Utility.id;
                         }
                         @Override
                         public void onFinish(Bitmap bitmap) {
@@ -193,7 +194,5 @@ public class SplashActivity extends Activity {
          finish();//调用finish方法后，系统并没有调用onDestory()方法，当前的Activity被移除了栈,但是并没有移除资源。当重新进入此Activity时，会执行onStart()方法。
 
     }
-
-
 
 }
