@@ -21,6 +21,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import bai.foryou.R;
+import bai.foryou.Service.MyService;
 import bai.foryou.util.HttpCallbackListener;
 import bai.foryou.util.HttpUtil;
 import bai.foryou.util.Utility;
@@ -62,27 +63,28 @@ public class SplashActivity extends Activity {
     private void initData(String address){
         HttpUtil.setHttpRequest(address, new HttpCallbackListener() {
             @Override
-            public void onFinish(String response){
+            public void onFinish(String response) {
 
                 String dataUrl = response;
-                Log.d("SplashActivity","response");
-                Log.d("SplashActivity",response);
-                if(dataUrl!=null){
+
+
+                if (dataUrl != null) {
                     //继续访问得到的数据接口
                     HttpUtil.setHttpRequest(dataUrl, new HttpCallbackListener() {
                         @Override
                         public void onFinish(String response) {
-                            Log.d("SplashActivity",response);
                             Utility.handeleResponse(SplashActivity.this, response);
-                            Utility.idToday=Utility.id;//在初始化数据时得到今天是第几期
-                            SentenceActivity.idSentence=Utility.id;//为每个Activity指定一个可变的id，保证在切换日期时互不影响。
-                            MusicActivity.idMusic=Utility.id;
-                            ContentActivity.idContent=Utility.id;
+                            Utility.idToday = Utility.id;//在初始化数据时得到今天是第几期
+                            SentenceActivity.idSentence = Utility.id;//为每个Activity指定一个可变的id，保证在切换日期时互不影响。
+                            MusicActivity.idMusic = Utility.id;
+                            ContentActivity.idContent = Utility.id;
                         }
+
                         @Override
                         public void onFinish(Bitmap bitmap) {
 
                         }
+
                         @Override
                         public void onError(Exception e) {
 
@@ -193,6 +195,12 @@ public class SplashActivity extends Activity {
         //onDestroy();
          finish();//调用finish方法后，系统并没有调用onDestory()方法，当前的Activity被移除了栈,但是并没有移除资源。当重新进入此Activity时，会执行onStart()方法。
 
+    }
+
+    private void startService(){
+        Intent service=new Intent();
+        service.setClass(this, MyService.class);
+        startService(service);
     }
 
 }

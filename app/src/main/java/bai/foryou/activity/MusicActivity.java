@@ -36,7 +36,8 @@ import bai.foryou.util.HttpCallbackListener;
 import bai.foryou.util.HttpUtil;
 import bai.foryou.util.Utility;
 
-public class MusicActivity extends Activity implements View.OnClickListener,SeekBar.OnSeekBarChangeListener{
+public class MusicActivity extends Activity implements View.OnClickListener,SeekBar.OnSeekBarChangeListener,
+        MediaPlayer.OnPreparedListener,MediaPlayer.OnCompletionListener{
     private TextView dateMusic;
     private TextView mTitle;
     private TextView mTexting;
@@ -47,7 +48,9 @@ public class MusicActivity extends Activity implements View.OnClickListener,Seek
     private ImageView musicNext;
 
     private SeekBar   mSeekBar;
+
     public  static MediaPlayer  mediaPlayer;
+
     private Boolean isPlay=false;//是否正在播放
     private Boolean isThread=true;//是否让子线程继续
 
@@ -91,8 +94,10 @@ public class MusicActivity extends Activity implements View.OnClickListener,Seek
 
         new LooperThread().start();
 
+        mediaPlayer=new MediaPlayer();
 
         String song_address=Utility.songUrl;
+
         if (song_address!=null){
             initMediaPlayer(song_address);
             //初始化歌词
@@ -108,18 +113,28 @@ public class MusicActivity extends Activity implements View.OnClickListener,Seek
         try{
             if (songUrl!=null){
                 Uri uri=Uri.parse(songUrl);
-                mediaPlayer=new MediaPlayer();
+                mediaPlayer.reset();
                 mediaPlayer.setDataSource(this, uri);
-                mediaPlayer.prepare();
-                long duration=mediaPlayer.getDuration();
-                String text_current=Utility.formatTime(duration);
-                mTextDuration.setText(text_current);
+                mediaPlayer.prepareAsync();//prepare()是线程阻塞的，prepareAsync()是异步的
+                mediaPlayer.setOnPreparedListener(this);
+
             }
 
         }catch (Exception e){
             e.printStackTrace();
         }
     }
+    @Override
+    public void onPrepared(MediaPlayer mediaPlayer){
+        long duration=mediaPlayer.getDuration();
+        String text_current=Utility.formatTime(duration);
+        mTextDuration.setText(text_current);
+    }
+    @Override
+    public void onCompletion(MediaPlayer mediaPlayer){
+
+    }
+
 
 
     public int lrcIndex(){
@@ -183,6 +198,7 @@ public class MusicActivity extends Activity implements View.OnClickListener,Seek
                 if (mediaPlayer.isPlaying()){
                     Toast.makeText(MusicActivity.this,"嘿嘿，先暂停再切换歌曲",Toast.LENGTH_SHORT).show();
                 }else{
+
                     if (idMusic>1){
                         idMusic=idMusic-1;
 
@@ -190,16 +206,18 @@ public class MusicActivity extends Activity implements View.OnClickListener,Seek
                         String str=nf.format(idMusic);//将int类型的数字再次变回“00000001”格式的数据。
                         String address="http://bai-foryou.sinacloud.net/"+str+".txt";
 
-                        mediaPlayer.stop();
 
-                        //mediaPlayer.release();
                         HttpUtil.setHttpRequest(address, new HttpCallbackListener() {
                             @Override
                             public void onFinish(String response) {
 
                                 Utility.handeleResponse(MusicActivity.this, response);
+                                //Intent intent_last=new Intent();
+                                //intent_last.setAction("bai.foryou.action_last");
+                                //sendBroadcast(intent_last);
                                 Message msg = new Message();
                                 handler4.sendMessage(msg);
+                                Log.d("MusicActivity",Utility.songUrl);
                             }
 
                             @Override
@@ -231,10 +249,6 @@ public class MusicActivity extends Activity implements View.OnClickListener,Seek
                         String str1=nf1.format(idMusic);//将int类型的数字再次变回“00000001”格式的数据。
                         Log.d("SentenceActivity", str1);
                         String address1="http://bai-foryou.sinacloud.net/"+str1+".txt";
-
-                        mediaPlayer.stop();
-
-                        //mediaPlayer.release();
                         HttpUtil.setHttpRequest(address1, new HttpCallbackListener() {
                             @Override
                             public void onFinish(String response) {
@@ -266,20 +280,12 @@ public class MusicActivity extends Activity implements View.OnClickListener,Seek
     }
     //重置mediaPlayer
    private android.os.Handler handler4=new android.os.Handler(){
-        @Override
         public void handleMessage(Message msg){
-            try{
-                dateMusic.setText(Utility.date);
-                initMediaPlayer(Utility.songUrl);
-                initLrc(Utility.lrcUrl);
-                initLrc(Utility.lrcUrl);
-
-                mTitle.setText(Utility.songTitle);
-            }catch (Exception e){
-
-            }
-        }
+            initMediaPlayer(Utility.songUrl);
+            initLrc(Utility.lrcUrl);
+            mTitle.setText(Utility.songTitle);}
     };
+
     private android.os.Handler handler=new android.os.Handler(){
 
         public void handleMessage(Message msg) {
