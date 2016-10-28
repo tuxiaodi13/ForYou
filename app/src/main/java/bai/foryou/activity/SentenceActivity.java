@@ -167,7 +167,7 @@ public class SentenceActivity extends Activity implements View.OnClickListener{
                         @Override
                         public void onFinish(String response) {
                             Log.d("SentenceActivity", response);
-                            Utility.handeleResponse(SentenceActivity.this, response);
+                            Utility.handleResponse(SentenceActivity.this, response);
                             handler.sendMessage(new Message());
                         }
 
@@ -197,7 +197,7 @@ public class SentenceActivity extends Activity implements View.OnClickListener{
                         @Override
                         public void onFinish(String response) {
                             Log.d("SentenceActivity", response);
-                            Utility.handeleResponse(SentenceActivity.this, response);
+                            Utility.handleResponse(SentenceActivity.this, response);
                             handler.sendMessage(new Message());
                         }
 

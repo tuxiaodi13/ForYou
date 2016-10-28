@@ -49,8 +49,6 @@ public class SplashActivity extends Activity {
 
         }
 
-
-
         iv_start=(ImageView)findViewById(R.id.iv_start);
         iv_start.setImageResource(R.drawable.look_around);
         initAnim();
@@ -64,16 +62,19 @@ public class SplashActivity extends Activity {
         HttpUtil.setHttpRequest(address, new HttpCallbackListener() {
             @Override
             public void onFinish(String response) {
-
-                String dataUrl = response;
-
+                Log.d("SplashActivity",response);
+                String dataUrl=response;
+                //String dataUrl1="http://bai-foryou.sinacloud.net/00000005.txt";
 
                 if (dataUrl != null) {
+
                     //继续访问得到的数据接口
                     HttpUtil.setHttpRequest(dataUrl, new HttpCallbackListener() {
                         @Override
                         public void onFinish(String response) {
-                            Utility.handeleResponse(SplashActivity.this, response);
+
+                            Utility.handleResponse(SplashActivity.this, response);
+                            Log.d("SplashActivity","id");
                             Utility.idToday = Utility.id;//在初始化数据时得到今天是第几期
                             SentenceActivity.idSentence = Utility.id;//为每个Activity指定一个可变的id，保证在切换日期时互不影响。
                             MusicActivity.idMusic = Utility.id;

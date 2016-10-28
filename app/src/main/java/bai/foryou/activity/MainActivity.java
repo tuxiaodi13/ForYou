@@ -56,7 +56,7 @@ public class MainActivity extends Activity {
 
         pager.setAdapter(new MyPagerAdapter(list));
         pager.setCurrentItem(0);
-        pager.setOnPageChangeListener(new MyOnPageChangeListener());
+        //pager.setOnPageChangeListener(new MyOnPageChangeListener());
     }
     /*
     *通过activity获取视图
@@ -73,7 +73,7 @@ public class MainActivity extends Activity {
         @Override
         public void destroyItem(ViewGroup container, int position,
                                 Object object) {
-            ViewPager pViewPager = ((ViewPager) container);
+            ViewPager pViewPager = (ViewPager) container;
             pViewPager.removeView(list.get(position));
         }
 

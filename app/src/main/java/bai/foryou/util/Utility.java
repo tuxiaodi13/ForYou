@@ -52,7 +52,7 @@ public class Utility {
             e.printStackTrace();
         }
     }
-    public  synchronized static void handeleResponse(Context context,String response){
+    public  synchronized static void handleResponse(Context context,String response){
         try{
             JSONObject json=new JSONObject(response);
             engStr=json.getString("engSentence");

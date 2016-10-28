@@ -114,7 +114,7 @@ public class ContentActivity extends Activity implements View.OnClickListener{
                         @Override
                         public void onFinish(String response) {
                             Log.d("SentenceActivity", response);
-                            Utility.handeleResponse(ContentActivity.this, response);
+                            Utility.handleResponse(ContentActivity.this, response);
                             handler.sendMessage(new Message());
 
 
@@ -146,7 +146,7 @@ public class ContentActivity extends Activity implements View.OnClickListener{
                         @Override
                         public void onFinish(String response) {
                             Log.d("SentenceActivity", response);
-                            Utility.handeleResponse(ContentActivity.this, response);
+                            Utility.handleResponse(ContentActivity.this, response);
                             handler.sendMessage(new Message());
                         }
 

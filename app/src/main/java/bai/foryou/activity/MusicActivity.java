@@ -59,6 +59,7 @@ public class MusicActivity extends Activity implements View.OnClickListener,Seek
     private int index=0;
 
     public static Integer idMusic;
+    public long duration=0;
 
 
     @Override
@@ -126,7 +127,7 @@ public class MusicActivity extends Activity implements View.OnClickListener,Seek
     }
     @Override
     public void onPrepared(MediaPlayer mediaPlayer){
-        long duration=mediaPlayer.getDuration();
+        duration=mediaPlayer.getDuration();
         String text_current=Utility.formatTime(duration);
         mTextDuration.setText(text_current);
     }
@@ -136,11 +137,11 @@ public class MusicActivity extends Activity implements View.OnClickListener,Seek
     }
 
 
-
+//根据MediaPlayer当前播放时间，得到应该绘制哪一句。
     public int lrcIndex(){
         if (mediaPlayer.isPlaying()){
             long currentTime=mediaPlayer.getCurrentPosition();
-            long duration=mediaPlayer.getDuration();
+            duration=mediaPlayer.getDuration();
             if(currentTime<duration){
                 for (int i=0;i<lrclist.size();i++){
                     if(i<lrclist.size()-1){
@@ -198,7 +199,6 @@ public class MusicActivity extends Activity implements View.OnClickListener,Seek
                 if (mediaPlayer.isPlaying()){
                     Toast.makeText(MusicActivity.this,"嘿嘿，先暂停再切换歌曲",Toast.LENGTH_SHORT).show();
                 }else{
-
                     if (idMusic>1){
                         idMusic=idMusic-1;
 
@@ -211,7 +211,7 @@ public class MusicActivity extends Activity implements View.OnClickListener,Seek
                             @Override
                             public void onFinish(String response) {
 
-                                Utility.handeleResponse(MusicActivity.this, response);
+                                Utility.handleResponse(MusicActivity.this, response);
                                 //Intent intent_last=new Intent();
                                 //intent_last.setAction("bai.foryou.action_last");
                                 //sendBroadcast(intent_last);
@@ -252,7 +252,7 @@ public class MusicActivity extends Activity implements View.OnClickListener,Seek
                         HttpUtil.setHttpRequest(address1, new HttpCallbackListener() {
                             @Override
                             public void onFinish(String response) {
-                                Utility.handeleResponse(MusicActivity.this, response);
+                                Utility.handleResponse(MusicActivity.this, response);
                                 Message msg = new Message();
                                 handler4.sendMessage(msg);
                             }
@@ -297,7 +297,7 @@ public class MusicActivity extends Activity implements View.OnClickListener,Seek
             }
         }
     };
-
+//OnSeekBarChangeListener的三个方法
     @Override
     public void onProgressChanged(SeekBar seekBar,int progress,boolean fromUser){
 
@@ -306,10 +306,11 @@ public class MusicActivity extends Activity implements View.OnClickListener,Seek
     public void onStartTrackingTouch(SeekBar seekBar){
 
     }
+    //进度条停止拖动时调用
     @Override
     public void onStopTrackingTouch(SeekBar seekBar){
         int progress=seekBar.getProgress();
-        long duration=mediaPlayer.getDuration();
+        duration=mediaPlayer.getDuration();
         String text= Utility.formatTime(duration);
         mTextDuration.setText(text);
         int to=progress*(int)duration/100;
@@ -323,7 +324,7 @@ public class MusicActivity extends Activity implements View.OnClickListener,Seek
 
                 String text_current=Utility.formatTime(current);
                 mTexting.setText(text_current);
-                long duration=mediaPlayer.getDuration();
+                duration=mediaPlayer.getDuration();
                 long a=100L*current/duration;
                 int progress=new Long(a).intValue();
                 mSeekBar.setProgress(progress);
@@ -334,7 +335,7 @@ public class MusicActivity extends Activity implements View.OnClickListener,Seek
     android.os.Handler handler3=new android.os.Handler(){
         public void handleMessage(Message msg){
             mLrcView.setIndex(lrcIndex());
-            mLrcView.invalidate();
+            mLrcView.invalidate();//重绘
         }
     };
 
